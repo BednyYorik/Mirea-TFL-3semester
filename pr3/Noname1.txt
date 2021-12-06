@@ -1,0 +1,28 @@
+%option noyywrap
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include <locale.h>
+%}
+%%
+\"[a-zA-Z0-9]+\" printf("STRING ");
+[0-9] printf("DIGIT ");
+null|true|false printf("LITERAL ");
+\" printf("QUOTE ");
+\{ printf("OBRACE1 ");
+\} printf("EBRACE1 ");
+\[ printf("OBRACE2 ");
+\] printf("EBRACE2 ");
+\: printf("COLON ");
+\; printf("SEMICOLON ");
+\, printf("COMMON ");
+\n printf("\n");
+[ \t]+ /* игнорируем пробелы и знаки табуляции */;
+%%
+int main(int argc, char **argv)
+{
+yyin = fopen(argv[1], "r");
+yylex();
+fclose(yyin);
+return (0);
+}
